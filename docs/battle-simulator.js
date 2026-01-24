@@ -162,6 +162,8 @@ function battle(armyA, armyB, iterations = 1000) {
   let winA = 0;
   let ties = 0;
   let winB = 0;
+  let capturedA = 0;
+  let capturedB = 0;
   
   for (let i = 0; i < iterations; i++) {
     const ai = armyA.copy();
@@ -184,16 +186,30 @@ function battle(armyA, armyB, iterations = 1000) {
       
       const dA = DICE_SETS[dcA].roll();
       const dB = DICE_SETS[dcB].roll();
-      ai.applyDamage(dB, DamageStrategy.MEN_AT_ARMS_FIRST);
-      bi.applyDamage(dA, DamageStrategy.MEN_AT_ARMS_FIRST);
+      const dB_left = ai.applyDamage(dB, DamageStrategy.MEN_AT_ARMS_FIRST) > 0;
+      const dA_left = bi.applyDamage(dA, DamageStrategy.MEN_AT_ARMS_FIRST) > 0;
       
       if (ai.isDefeated() || bi.isDefeated()) {
         if (ai.isDefeated() && bi.isDefeated()) {
-          ties += 1;
+          if(dB_left && dA_left) {
+            ties += 1;
+          } else if (dB_left) {
+            winB += 1;
+          } else if (dA_left) {
+            winA += 1;
+          } else {
+            ties += 1;
+          }
         } else if (ai.isDefeated()) {
           winB += 1;
+          if (!dB_left) {
+            capturedA += 1;
+          }
         } else if (bi.isDefeated()) {
           winA += 1;
+          if (!dA_left) {
+            capturedB += 1;
+          }
         }
         break;
       }
@@ -203,7 +219,9 @@ function battle(armyA, armyB, iterations = 1000) {
   return {
     winA: winA / iterations,
     ties: ties / iterations,
-    winB: winB / iterations
+    winB: winB / iterations,
+    capturedA: capturedA / iterations,
+    capturedB: capturedB / iterations
   };
 }
 
@@ -378,6 +396,10 @@ function BattleSimulator() {
             React.createElement('div', { className: 'text-3xl font-bold text-blue-400' }, (results.winA * 100).toFixed(1) + '%'),
             React.createElement('div', { className: 'text-sm mt-1' }, 'Army A Wins')
           ),
+          React.createElement('div', { className: 'bg-red-900/30 p-4 rounded' },
+            React.createElement('div', { className: 'text-3xl font-bold text-red-400' }, (results.capturedB * 100).toFixed(1) + '%'),
+            React.createElement('div', { className: 'text-sm mt-1' }, 'Captured leader B')
+          ),
           React.createElement('div', { className: 'bg-gray-700/30 p-4 rounded' },
             React.createElement('div', { className: 'text-3xl font-bold text-gray-300' }, (results.ties * 100).toFixed(1) + '%'),
             React.createElement('div', { className: 'text-sm mt-1' }, 'Ties')
@@ -385,6 +407,10 @@ function BattleSimulator() {
           React.createElement('div', { className: 'bg-red-900/30 p-4 rounded' },
             React.createElement('div', { className: 'text-3xl font-bold text-red-400' }, (results.winB * 100).toFixed(1) + '%'),
             React.createElement('div', { className: 'text-sm mt-1' }, 'Army B Wins')
+          ),
+          React.createElement('div', { className: 'bg-red-900/30 p-4 rounded' },
+            React.createElement('div', { className: 'text-3xl font-bold text-red-400' }, (results.capturedA * 100).toFixed(1) + '%'),
+            React.createElement('div', { className: 'text-sm mt-1' }, 'Captured Leader A')
           )
         )
       )
