@@ -1,5 +1,7 @@
 const { useState } = React;
 
+const SIMULATIONS = 100000;
+
 const MAX_MEN_AT_ARMS = 13;
 const MAX_KNIGHTS = 8;
 
@@ -265,7 +267,7 @@ function BattleSimulator() {
     setTimeout(() => {
       const a = new Army(armyA.menAtArms, armyA.knights, armyA.structure, armyA.leader);
       const b = new Army(armyB.menAtArms, armyB.knights, armyB.structure, armyB.leader);
-      const result = battle(a, b, 5000);
+      const result = battle(a, b, SIMULATIONS);
       setResults(result);
       setSimulating(false);
     }, 10);
@@ -366,7 +368,7 @@ function BattleSimulator() {
           onClick: runSimulation,
           disabled: simulating,
           className: 'bg-amber-600 hover:bg-amber-700 disabled:bg-gray-600 px-8 py-3 rounded-lg font-bold text-lg transition-colors'
-        }, simulating ? 'Simulating...' : 'Run Battle Simulation (5000 iterations)')
+        }, simulating ? 'Simulating...' : `Run Battle Simulation (${SIMULATIONS} iterations)`)
       ),
       results && React.createElement('div', { className: 'bg-slate-800 p-6 rounded-lg border-2 border-amber-500' },
         React.createElement('h2', { className: 'text-2xl font-bold mb-4 text-center' }, 'Battle Results'),
