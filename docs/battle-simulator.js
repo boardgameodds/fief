@@ -1,5 +1,6 @@
 const { useState } = React;
 
+const PAGE_TITLE = "Fief: France 1429 Battle Simulator";
 const SIMULATIONS = 100000;
 
 const MAX_MEN_AT_ARMS = 13;
@@ -348,7 +349,7 @@ function BattleSimulator() {
 
   return React.createElement('div', { className: 'min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 text-white p-8' },
     React.createElement('div', { className: 'max-w-6xl mx-auto' },
-      React.createElement('h1', { className: 'text-4xl font-bold text-center mb-8' }, 'Medieval Battle Simulator'),
+      React.createElement('h1', { className: 'text-4xl font-bold text-center mb-8' }, PAGE_TITLE),
       React.createElement('div', { className: 'grid md:grid-cols-2 gap-6 mb-8' },
         React.createElement(ArmyConfig, {
           army: armyA,
