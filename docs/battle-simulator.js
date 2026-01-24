@@ -192,13 +192,13 @@ function battle(armyA, armyB, iterations = 1000) {
       if (ai.isDefeated() || bi.isDefeated()) {
         if (ai.isDefeated() && bi.isDefeated()) {
           if(dB_left && dA_left) {
-            ties += 1;
+            ties += 1; // Mutual annihilation
           } else if (dB_left) {
             winB += 1;
           } else if (dA_left) {
             winA += 1;
           } else {
-            ties += 1;
+            ties += 1; // Only lords remain
           }
         } else if (ai.isDefeated()) {
           winB += 1;
@@ -394,11 +394,7 @@ function BattleSimulator() {
         React.createElement('div', { className: 'grid grid-cols-3 gap-4 text-center' },
           React.createElement('div', { className: 'bg-blue-900/30 p-4 rounded' },
             React.createElement('div', { className: 'text-3xl font-bold text-blue-400' }, (results.winA * 100).toFixed(1) + '%'),
-            React.createElement('div', { className: 'text-sm mt-1' }, 'Army A Wins')
-          ),
-          React.createElement('div', { className: 'bg-red-900/30 p-4 rounded' },
-            React.createElement('div', { className: 'text-3xl font-bold text-red-400' }, (results.capturedB * 100).toFixed(1) + '%'),
-            React.createElement('div', { className: 'text-sm mt-1' }, 'Captured leader B')
+            React.createElement('div', { className: 'text-sm mt-1' }, 'Army A Wins (captures: ' + (results.capturedB * 100).toFixed(1) + '% of all iterations)')
           ),
           React.createElement('div', { className: 'bg-gray-700/30 p-4 rounded' },
             React.createElement('div', { className: 'text-3xl font-bold text-gray-300' }, (results.ties * 100).toFixed(1) + '%'),
@@ -406,11 +402,7 @@ function BattleSimulator() {
           ),
           React.createElement('div', { className: 'bg-red-900/30 p-4 rounded' },
             React.createElement('div', { className: 'text-3xl font-bold text-red-400' }, (results.winB * 100).toFixed(1) + '%'),
-            React.createElement('div', { className: 'text-sm mt-1' }, 'Army B Wins')
-          ),
-          React.createElement('div', { className: 'bg-red-900/30 p-4 rounded' },
-            React.createElement('div', { className: 'text-3xl font-bold text-red-400' }, (results.capturedA * 100).toFixed(1) + '%'),
-            React.createElement('div', { className: 'text-sm mt-1' }, 'Captured Leader A')
+            React.createElement('div', { className: 'text-sm mt-1' }, 'Army B Wins (captures: ' + (results.capturedA * 100).toFixed(1) + '% of all iterations)')
           )
         )
       )
