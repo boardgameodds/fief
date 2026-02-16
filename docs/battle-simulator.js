@@ -373,13 +373,15 @@ function BattleSimulator() {
           army: armyA,
           setArmy: setArmyA,
           title: 'Army A (Attacker)',
-          color: 'border-blue-500 bg-blue-900/20'
+          color: 'border-blue-500 bg-blue-900/20',
+          isAttacker: true,
         }),
         React.createElement(ArmyConfig, {
           army: armyB,
           setArmy: setArmyB,
           title: 'Army B (Defender)',
-          color: 'border-red-500 bg-red-900/20'
+          color: 'border-red-500 bg-red-900/20',
+          isAttacker: false,
         })
       ),
       React.createElement('div', { className: 'text-center mb-8' },
