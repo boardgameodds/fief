@@ -347,7 +347,17 @@ function BattleSimulator() {
             React.createElement('option', { value: ArmyLeader.DARC }, "D'Arc")
           )
         ),
-        React.createElement('div', { style: { visibility: (isAttacker ? 'hidden' : 'visible') }, },
+        isAttacker ? React.createElement('div', null,
+          React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Attack Type'),
+          React.createElement('select', {
+            value: army.cavalcade,
+            onChange: (e) => setArmy({...army, cavalcade: parseInt(e.target.value) === 1}),
+            className: 'w-full p-2 border rounded text-black'
+          },
+            React.createElement('option', { value: DefensiveStructure.NONE }, 'Default'),
+            React.createElement('option', { value: DefensiveStructure.FORTIFIED_CITY }, 'Cavalcade')
+          )
+        ) : React.createElement('div', null,
           React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Defensive Structure'),
           React.createElement('select', {
             value: isAttacker ? DefensiveStructure.NONE : army.structure,
