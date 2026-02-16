@@ -292,7 +292,7 @@ function BattleSimulator() {
     }, 10);
   };
 
-  const ArmyConfig = ({ army, setArmy, title, color }) => {
+  const ArmyConfig = ({ army, setArmy, title, color, isAttacker }) => {
     const a = new Army(army.menAtArms, army.knights, army.structure, army.leader);
     
     return React.createElement('div', { className: `p-6 rounded-lg border-2 ${color}` },
@@ -344,10 +344,10 @@ function BattleSimulator() {
             React.createElement('option', { value: ArmyLeader.DARC }, "D'Arc")
           )
         ),
-        React.createElement('div', null,
+        React.createElement('div', { style: `visibility: ${isAttacker ? 'hidden' : 'visible'}`},
           React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Defensive Structure'),
           React.createElement('select', {
-            value: army.structure,
+            value: isAttacker ? DefensiveStructure.NONE : army.structure,
             onChange: (e) => setArmy({...army, structure: parseInt(e.target.value)}),
             className: 'w-full p-2 border rounded text-black'
           },
