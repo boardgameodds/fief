@@ -280,7 +280,7 @@ function BattleSimulator() {
     menAtArms: 5,
     knights: 3,
     structure: DefensiveStructure.NONE,
-    leader: ArmyLeader.NONE,
+    leader: ArmyLeader.UNTITLED_LADY, // Attacker army needs some leader
     cavalcade: false
   });
   
@@ -353,7 +353,7 @@ function BattleSimulator() {
             onChange: (e) => setArmy({...army, leader: parseInt(e.target.value)}),
             className: 'w-full p-2 border rounded text-black'
           },
-            React.createElement('option', { value: ArmyLeader.NONE }, 'None'),
+            React.createElement('option', { value: ArmyLeader.NONE, hidden: isAttacker, }, 'None'),
             React.createElement('option', { value: ArmyLeader.UNTITLED_LADY }, 'Untitled Lady'),
             React.createElement('option', { value: ArmyLeader.LORD_OR_TITLED_LADY }, 'Lord/Titled Lady'),
             React.createElement('option', { value: ArmyLeader.DARC }, "D'Arc")
