@@ -18,13 +18,14 @@ const DefensiveStructure = {
 };
 
 const ArmyLeader = {
-  NONE_OR_LADY: 0,
-  LORD_OR_TITLED_LADY: 1,
-  DARC: 2
+  NONE: 0,
+  UNTITLED_LADY: 1,
+  LORD_OR_TITLED_LADY: 2,
+  DARC: 3
 };
 
 class Army {
-  constructor(menAtArms, knights, structure = DefensiveStructure.NONE, leader = ArmyLeader.NONE_OR_LADY, cavalcade = false) {
+  constructor(menAtArms, knights, structure = DefensiveStructure.NONE, leader = ArmyLeader.NONE, cavalcade = false) {
     this.menAtArms = menAtArms;
     this.knights = knights;
     this.structure = structure;
@@ -192,14 +193,24 @@ function battle(armyA, armyB, iterations = 1000) {
       
       if (ai.isDefeated() || bi.isDefeated()) {
         if (ai.isDefeated() && bi.isDefeated()) {
+          // Both armies only have leaders left, if any
           if(dB_left && dA_left) {
             ties += 1; // Mutual annihilation
           } else if (dB_left) {
-            winB += 1;
+            if (bi.leader !== ArmyLeader.NONE) {
+              winB += 1; // B wins only if it had a leader left
+            } else {
+              ties += 1;
+            }
           } else if (dA_left) {
             winA += 1;
           } else {
-            ties += 1; // Only lords remain
+            // Both armies cannot deal final blow to leader
+            if (bi.leader === ArmyLeader.NONE) {
+              winA += 1; // A wins if B had no leader
+            } else {
+              ties += 1; // Only lords remain  
+            }
           }
         } else if (ai.isDefeated()) {
           winB += 1;
@@ -208,7 +219,7 @@ function battle(armyA, armyB, iterations = 1000) {
           }
         } else if (bi.isDefeated()) {
           winA += 1;
-          if (!dA_left) {
+          if (!dA_left && bi.leader !== ArmyLeader.NONE) {
             capturedB += 1;
           }
         }
@@ -269,7 +280,7 @@ function BattleSimulator() {
     menAtArms: 5,
     knights: 3,
     structure: DefensiveStructure.NONE,
-    leader: ArmyLeader.NONE_OR_LADY,
+    leader: ArmyLeader.NONE,
     cavalcade: false
   });
   
@@ -277,7 +288,7 @@ function BattleSimulator() {
     menAtArms: 4,
     knights: 2,
     structure: DefensiveStructure.STRONGHOLD,
-    leader: ArmyLeader.NONE_OR_LADY,
+    leader: ArmyLeader.NONE,
     cavalcade: false
   });
   
@@ -342,7 +353,8 @@ function BattleSimulator() {
             onChange: (e) => setArmy({...army, leader: parseInt(e.target.value)}),
             className: 'w-full p-2 border rounded text-black'
           },
-            React.createElement('option', { value: ArmyLeader.NONE_OR_LADY }, 'None/Lady'),
+            React.createElement('option', { value: ArmyLeader.NONE }, 'None'),
+            React.createElement('option', { value: ArmyLeader.UNTITLED_LADY }, 'Untitled Lady'),
             React.createElement('option', { value: ArmyLeader.LORD_OR_TITLED_LADY }, 'Lord/Titled Lady'),
             React.createElement('option', { value: ArmyLeader.DARC }, "D'Arc")
           )
@@ -351,11 +363,11 @@ function BattleSimulator() {
           React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Attack Type'),
           React.createElement('select', {
             value: army.cavalcade,
-            onChange: (e) => setArmy({...army, cavalcade: parseInt(e.target.value) === 1}),
+            onChange: (e) => setArmy({...army, cavalcade: e.target.value}),
             className: 'w-full p-2 border rounded text-black'
           },
-            React.createElement('option', { value: DefensiveStructure.NONE }, 'Default'),
-            React.createElement('option', { value: DefensiveStructure.FORTIFIED_CITY }, 'Cavalcade')
+            React.createElement('option', { value: false }, 'Default'),
+            React.createElement('option', { value: true }, 'Cavalcade')
           )
         ) : React.createElement('div', null,
           React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Defensive Structure'),
