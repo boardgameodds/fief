@@ -269,14 +269,16 @@ function BattleSimulator() {
     menAtArms: 5,
     knights: 3,
     structure: DefensiveStructure.NONE,
-    leader: ArmyLeader.NONE_OR_LADY
+    leader: ArmyLeader.NONE_OR_LADY,
+    cavalcade: false
   });
   
   const [armyB, setArmyB] = useState({
     menAtArms: 4,
     knights: 2,
     structure: DefensiveStructure.STRONGHOLD,
-    leader: ArmyLeader.NONE_OR_LADY
+    leader: ArmyLeader.NONE_OR_LADY,
+    cavalcade: false
   });
   
   const [results, setResults] = useState(null);
