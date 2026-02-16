@@ -345,7 +345,7 @@ function BattleSimulator() {
             React.createElement('option', { value: ArmyLeader.DARC }, "D'Arc")
           )
         ),
-        React.createElement('div', { style: `visibility: ${isAttacker ? 'hidden' : 'visible'}`},
+        React.createElement('div', { style: { visibility: (isAttacker ? 'hidden' : 'visible') }, },
           React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Defensive Structure'),
           React.createElement('select', {
             value: isAttacker ? DefensiveStructure.NONE : army.structure,
