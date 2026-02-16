@@ -24,15 +24,16 @@ const ArmyLeader = {
 };
 
 class Army {
-  constructor(menAtArms, knights, structure = DefensiveStructure.NONE, leader = ArmyLeader.NONE_OR_LADY) {
+  constructor(menAtArms, knights, structure = DefensiveStructure.NONE, leader = ArmyLeader.NONE_OR_LADY, cavalcade = false) {
     this.menAtArms = menAtArms;
     this.knights = knights;
     this.structure = structure;
     this.leader = leader;
+    this.cavalcade = cavalcade;
   }
 
   copy() {
-    return new Army(this.menAtArms, this.knights, this.structure, this.leader);
+    return new Army(this.menAtArms, this.knights, this.structure, this.leader, this.cavalcade);
   }
 
   isDefeated() {
@@ -185,7 +186,7 @@ function battle(armyA, armyB, iterations = 1000) {
       }
       
       const dA = DICE_SETS[dcA].roll();
-      const dB = DICE_SETS[dcB].roll();
+      const dB = DICE_SETS[dcB].roll(ai.cavalcade ? 1 : 0);
       const dB_left = ai.applyDamage(dB, DamageStrategy.MEN_AT_ARMS_FIRST) > 0;
       const dA_left = bi.applyDamage(dA, DamageStrategy.MEN_AT_ARMS_FIRST) > 0;
       
@@ -374,14 +375,14 @@ function BattleSimulator() {
           setArmy: setArmyA,
           title: 'Army A (Attacker)',
           color: 'border-blue-500 bg-blue-900/20',
-          isAttacker: true,
+          isAttacker: true
         }),
         React.createElement(ArmyConfig, {
           army: armyB,
           setArmy: setArmyB,
           title: 'Army B (Defender)',
           color: 'border-red-500 bg-red-900/20',
-          isAttacker: false,
+          isAttacker: false
         })
       ),
       React.createElement('div', { className: 'text-center mb-8' },
