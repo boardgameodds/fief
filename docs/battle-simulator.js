@@ -301,6 +301,7 @@ function BattleSimulator() {
       const a = new Army(armyA.menAtArms, armyA.knights, armyA.structure, armyA.leader);
       const b = new Army(armyB.menAtArms, armyB.knights, armyB.structure, armyB.leader);
       const result = battle(a, b, SIMULATIONS);
+      console.log('battle result: ', a, b, result);
       setResults(result);
       setSimulating(false);
     }, 10);
